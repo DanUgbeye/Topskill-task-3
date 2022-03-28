@@ -40,12 +40,15 @@ const getAllProfiles = async (req, res) => {
 
   try{
     // getting the page from the request query
-    const { page } = req.query;
-    if(!page) page = 0;
-
+    let page;
+    if(req.query.page){
+      page = req.query.page;
+    } else {
+      page = 1;
+    }
     const resp = await profileModel.find()
     .sort( {firstName: 'asc'} )
-    .skip(page*2)
+    .skip(page-1)
     .limit(2);
 
     if(resp.length < 1) {
