@@ -1,5 +1,8 @@
 
+
 const profileRouter = require('express').Router();
+
+
 const { 
   createProfile,
   getProfile, 
@@ -26,5 +29,16 @@ profileRouter.route('/profile/:id').put(updateProfile);
 
 //search for a user profile
 profileRouter.route('/search').get(searchProfile);
+
+//the user profile route
+profileRouter.route('/login').get((req, res) => {
+  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+})
+
+//the user profile route
+profileRouter.route('/').get((req, res) => {
+  // console.log(req.oidc.user);
+  res.send(req.oidc.isAuthenticated() ? `Hello ${req.oidc.user.name}` : 'Log in to use this api');
+}).name
 
 module.exports = { profileRouter };
