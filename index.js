@@ -25,7 +25,7 @@ const limiter = rateLimit({
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
-
+//configuration used for authentication
 const config = {
   authRequired: false,
   auth0Logout: true,
@@ -40,10 +40,13 @@ app.use(auth(config));
 // Apply the rate limiting middleware to all requests
 app.use(limiter);
 
+//this requires authentication for evey request
 app.use('/', requiresAuth(), profileRouter);
 
+//establishes connection to the db
 const conn = connectDb();
 
+//starts the express server after connecting to the db
 conn.then( async () => {
   app.listen(process.env.PORT, () => {
     console.log(`app started on port ${process.env.PORT}`);
